@@ -4,11 +4,11 @@ import ButtonPesananProduk from "./ButtonPesananProduk";
 
 export default function PesananPenjual() {
   const [transactions, setTransactions] = useState([]);
+  const [selectedStatus, setSelectedStatus] = useState("Pending");
+  const [filteredTransactions, setFilteredTransactions] = useState([]);
 
   useEffect(() => {
     const token = sessionStorage.getItem("accessToken");
-    console.log(token);
-
     axios
       .get("http://localhost:8000/api/v1/transaksi-penjual", {
         headers: {
@@ -17,11 +17,32 @@ export default function PesananPenjual() {
       })
       .then((response) => {
         setTransactions(response.data.data);
+        setFilteredTransactions(
+          response.data.data.filter((transaction) =>
+            [
+              "Pending",
+              "Dikonfirmasi",
+              "Diproses",
+              "Dikirim",
+              "Diterima",
+              "Dibayar",
+            ].includes(transaction.status)
+          )
+        );
       })
       .catch((error) => {
         console.error("Error fetching transactions:", error);
       });
   }, []);
+
+  const handleStatusChange = (e) => {
+    const status = e.target.value;
+    setSelectedStatus(status);
+    const filteredTransactions = transactions.filter(
+      (transaction) => transaction.status === status
+    );
+    setFilteredTransactions(filteredTransactions);
+  };
 
   return (
     <div
@@ -46,71 +67,52 @@ export default function PesananPenjual() {
                         className="form-select"
                         id="sortSelect"
                         aria-label="Floating label select example"
+                        value={selectedStatus}
+                        onChange={handleStatusChange}
                       >
-                        <option selected>Newest</option>
-                        <option value="1">Trending</option>
-                        <option value="2">Most Viewed</option>
-                        <option value="3">Less Viewed</option>
-                        <option value="3">Ending Soon</option>
-                        <option value="3">Recently Sold </option>
-                        <option value="3">Recently Created </option>
-                        <option value="3">Recently Viewed </option>
-                        <option value="3">Ending Soon</option>
+                        <option value="Pending">Pending</option>
+                        <option value="Dikonfirmasi">Dikonfirmasi</option>
+                        <option value="Diproses">Diproses</option>
+                        <option value="Dikirim">Dikirim</option>
+                        <option value="Diterima">Diterima</option>
+                        <option value="Dibayar">Dibayar</option>
+                        <option value="Selesai">Selesai</option>
                       </select>
-                      <label for="sortSelect">Sort By</label>
+                      <label htmlFor="sortSelect">Sort By</label>
                     </div>
                   </div>
                 </div>
                 <div className="activity-wrapper">
                   <div className="row gy-3">
-                    {transactions.map((transaction) => (
+                    {filteredTransactions.map((transaction) => (
                       <div className="col-12" key={transaction.id}>
                         <div className="activity-item">
                           <div className="lab-inner d-flex flex-wrap align-items-center p-3 p-md-4">
-                            {transaction.status === "Dikirim" && (
-                              <div
-                                className="alert alert-info mt-2 w-100 "
-                                role="alert"
-                              >
-                                Mohon Tunggu User Konfirmasi Produk
-                              </div>
-                            )}
-                            {transaction.status === "Diterima" && (
-                              <div
-                                className="alert alert-info mt-2 w-100 "
-                                role="alert"
-                              >
-                                Produk Sudah Diterima User
-                              </div>
-                            )}
-                            {transaction.status === "Dibayar" && (
-                              <div
-                                className="alert alert-info mt-2 w-100 "
-                                role="alert"
-                              >
-                                Pastikan Sudah Menerima Pembayaran
-                              </div>
-                            )}
-
                             <div className="lab-thumb me-3 me-md-4">
                               <img
                                 src={`http://localhost:8000/storage/produk/${transaction.pesanan_produk[0].produk.gambar}`}
                                 alt="img"
-                                style={{ width: "160px", height: "160px" }}
+                                style={{
+                                  width: "160px",
+                                  height: "160px",
+                                  objectFit: "cover",
+                                  borderRadius: "10px",
+                                }}
                               />
                             </div>
-
                             <div className="lab-content">
                               <h4>
-                                <a href={`${transaction.id}`}>
+                                <a
+                                  href={`/detail-transaksi/penjual/${transaction.id}`}
+                                >
                                   #{transaction.invoice_number}
                                 </a>
                               </h4>
                               <p className="mb-2">
                                 {transaction.pesanan_produk[0].produk.nama}
                                 <b>
-                                  {"  "}
-                                  Rp.
+                                  {" "}
+                                  Rp.{" "}
                                   {transaction.pesanan_produk[0].produk.harga}
                                 </b>
                               </p>

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ButtonUpdateStatus from "./ButtonUpdateStatus";
 import HandleAlert from "./HandleAlert";
+import { Link } from "react-router-dom";
 
 export default function ChildHistoryPesanan({ sortBy }) {
   const [transactions, setTransactions] = useState([]);
@@ -75,7 +76,10 @@ export default function ChildHistoryPesanan({ sortBy }) {
                   <div className="lab-inner d-flex flex-wrap align-items-center p-3 p-md-4">
                     <HandleAlert transaction={transaction} />
                     <div className="lab-content">
-                      <h4>#{transaction.invoice_number}</h4>
+                      <Link to={`/detail-transaksi/pembeli/${transaction.id}`}>
+                        <h4>#{transaction.invoice_number}</h4>
+                      </Link>
+
                       <p className="mb-2">
                         Total Harga <b>Rp.{transaction.total_harga}</b>
                       </p>

@@ -20,6 +20,8 @@ import EditProdukToko from "./pages/Profile/Produk Toko/EditProdukToko";
 import PesananProduk from "./pages/Pesanan Produk/PesananProduk";
 import HistoryTransaksi from "./pages/Pesanan Produk/HistoryTransaksi";
 import UpdatePesananUser from "./pages/Pesanan Produk/UpdatePesananUser";
+import DetailTransaksiPenjual from "./pages/Pesanan Produk/DetailTransaksiPenjual";
+import DetailTransaksiPembeli from "./pages/Pesanan Produk/DetailTransaksiPembeli";
 
 const App = () => {
   const hasToken = !!sessionStorage.getItem("accessToken");
@@ -94,7 +96,24 @@ const App = () => {
             />
           }
         />
-
+        <Route
+          path="/detail-transaksi/penjual/:id_transaksi"
+          element={
+            <PrivateRoute
+              element={<DetailTransaksiPenjual />}
+              path="/detail-transaksi/penjual/:id_transaksi"
+            />
+          }
+        />
+        <Route
+          path="/detail-transaksi/pembeli/:id_transaksiPembeli"
+          element={
+            <PrivateRoute
+              element={<DetailTransaksiPembeli />}
+              path="/detail-transaksi/pembeli/:id_transaksiPembeli"
+            />
+          }
+        />
         <Route path="*" element={<Navigate to="/Not-Found404" />} />
       </Routes>
     </Router>
