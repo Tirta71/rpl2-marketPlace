@@ -5,6 +5,7 @@ import NavProfileToko from "../../Component/ProfileToko/NavProfileToko";
 import AboutProfileToko from "../../Component/ProfileToko/AboutProfileToko";
 import TambahProduk from "../../Component/ProfileToko/Produk/TambahProduk";
 import TampilProfilProduk from "../../Component/ProfileToko/Produk/TampilProfilProduk";
+import PesananProduk from "../../Component/ProfileToko/Produk/PesananProduk";
 
 export default function ProfileToko() {
   return (
@@ -65,6 +66,21 @@ export default function ProfileToko() {
                                     My Produk
                                   </button>
                                 </li>
+                                <li className="nav-item" role="presentation">
+                                  <button
+                                    className="nav-link"
+                                    id="pills-pesanan-tab"
+                                    data-bs-toggle="pill"
+                                    data-bs-target="#pills-pesanan"
+                                    type="button"
+                                    role="tab"
+                                    aria-controls="pills-pesanan"
+                                    aria-selected="true"
+                                  >
+                                    <i className="icofont-flash"></i>
+                                    Pesanan
+                                  </button>
+                                </li>
 
                                 <li className="custom-select">
                                   <select>
@@ -81,6 +97,7 @@ export default function ProfileToko() {
                               >
                                 <TambahProduk />
                                 <TampilProfilProduk />
+                                <PesananProduk />
                               </div>
                             </div>
                           </article>
