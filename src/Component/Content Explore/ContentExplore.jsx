@@ -138,7 +138,6 @@ export default function ContentExplore() {
                                 </h4>
                                 <div className="price-like d-flex justify-content-between align-items-center">
                                   <p className="nft-price">
-                                    Harga{"  "}
                                     <span className="yellow-color">
                                       Rp. {produk.harga}
                                     </span>
